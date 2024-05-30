@@ -1,4 +1,6 @@
-<template>
+
+
+<template v-if="deals">
   <div style="padding: 30px;">
     <a-card title="Тестовое задание" :bordered="false" style="width: 100%">
       <template #extra><a-input-search v-model:value="value" placeholder="Найти..." style="width: 200px" 
@@ -32,6 +34,8 @@ const columns = [
   { title: 'Ответственный', dataIndex: 'responsible', key: 'responsible' },
   { title: 'Дата создания', dataIndex: 'date', key: 'date' },
 ];
+
+const route = "http://localhost:3001/api/leads";
 
 const data = [
   {
