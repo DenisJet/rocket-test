@@ -1,85 +1,51 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+<template>
+  <div style="background: #ececec; padding: 30px;">
+    <a-card title="Тестовое задание" :bordered="false" style="width: 100%">
+      <a-table :columns="columns" :data-source="data" :scroll="{ x: 900 }" :expand-column-width="50" :pagination="false">
+        <template #expandedRowRender="{ record }">
+          <p style="margin: 0">
+            {{ record.description }}
+          </p>
+        </template>
+      </a-table>
+    </a-card>
+  </div>
+</template>
+<script lang="ts" setup>
+const columns = [
+  { title: 'Название', dataIndex: 'name', key: 'name', fixed: true },
+  { title: 'Бюджет', dataIndex: 'budget', key: 'budget' },
+  { title: 'Статус', dataIndex: 'status', key: 'status' },
+  { title: 'Ответственный', dataIndex: 'responsible', key: 'responsible' },
+  { title: 'Дата создания', dataIndex: 'date', key: 'date' },
+];
+
+const data = [
+  {
+    key: 1,
+    name: 'Первая',
+    budget: '100 000',
+    status: 'Переговоры',
+    responsible: 'Иванов',
+    date: '11.04.2024',
+    description: 'Контакты'
+  },
+  {
+    key: 2,
+    name: 'Вторая',
+    budget: '70 000',
+    status: 'Закрыта',
+    responsible: 'Петров',
+    date: '18.03.2024',
+    description: 'Контакты'
+  },
+];
 </script>
 
-<template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
-</template>
-
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
 
 @media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
 }
 </style>
