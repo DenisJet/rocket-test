@@ -34,6 +34,8 @@ export class AppService {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-    }).then((response) => response.json());
+    })
+      .then((response) => response.json())
+      .then((data) => data._embedded.leads);
   }
 }

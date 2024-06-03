@@ -62,7 +62,7 @@ const data = await fetch(route, {
   headers: {
     "Content-Type": "application/json"
   },
-}).then((res) => res.json()).then((data) => data._embedded.leads);
+}).then((res) => res.json());
 console.log(data);
 
 </script>
