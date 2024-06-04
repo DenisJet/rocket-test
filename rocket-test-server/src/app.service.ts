@@ -36,6 +36,6 @@ export class AppService {
       },
     })
       .then((response) => response.json())
-      .then((data) => data._embedded.leads);
+      .then((deals) => deals._embedded.leads);
   }
 }

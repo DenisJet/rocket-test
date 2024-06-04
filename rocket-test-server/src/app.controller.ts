@@ -10,7 +10,7 @@ export class AppController {
     'kWSdvCU7zGnVFtgVHLm51VapKIDHoenHCKfw2uZIsfkwy1rqsLmMthjiW7jgOe0M';
   private redirectUrl = 'https://example.com';
   private code =
-    'def5020023e7d528e54b5384ff006d480e92945711f0740807e4bdd5a8cd5df0fd510cb8e77c90cb6666c8b7456d3c2f46427bd996ac72f4c4dd6b198d6f270efa6ef32ab1869c8bfaf624b0199aef895be53db0ed1259069b0302f291daea89ec1b1830ca25e971dcb0a29f717b4153a156c397481bff1fd313e37e1eedc4e15c8576612e8fb445bd1602522d6cdeb759cfdc15c384f5e164aec4676f5cc18044710f85b350bc7860276e03eb1aadaf845adb3c21e199e769ad21591aa16db4e6e484a94f34fedaf01e725e6c5768b3269da92ffacea3597fb84d1427cc2e75452d734a8dc86cc612defee805a461fe9e0ff4d1d3f93174182edfe450ca102921d2caa2aeca1da2d2121d79f9b3867e8e90f86fa3b838f8a5549319d5197f7c878648fbdfe78083ab2f001de8f352eccbd545b18168b3e8bb80b562dbfb0aa3c632954f85dc6e34dd848746fce87a153f15d2c393c9343999f772a2824472bebddd70b291069a5df1be94ea162331ae69707ee24af6fb38bda21a573b922f21dd55113f738a3d7129a6a8ecde906c7194894f1090008dfa913eb4f1b3d6945df3122770f62fcb908107999b9bbaad3ea26050410d4451529e084ed630071bd2cfac9ba11bdeb3505e500be65f567d9bf4aecbd5f66291fccdc26b550a7a20a8a1e3de37';
+    'def50200c77583d7e449a3b1106fc85446dd2245ae1a2f25b8ba2d3b43ecb8f59f9e91a03f6798117cc45d815f8e660aeb18344ecb3aa32bac4edabc8376bdea95100e80e14d70723f511f6a23514deffcb0516d54d9badd27d56e4c3b317c44ee0b23c1d5a7fe6364f8fc992e2d6e60265134f7b771e09090066d87b0d2e9670b53dc437f74d16176156c3453f3939e68818b9a7cb4c041c4d389fc56fcf8534e888e94247ae59f14a5b824d7d0ef5b6b0594bc9bdaabd1cd46a3c0efd39303d69b7ed39b4ff69921f7d22122e179945c5bd27ff7890d35b2af6d868381623e8cc4096dd196905c2811bdb51ee5ddcfdf4f08d5211d55bc1dd4e5e7e904614fa18a969ae48d0ac12268dd7a6b99a28c99061b0d36a83190da0f327dc1b9a4b83c534b9b3e8e70572aecdafddd2d675675cd1d36a3f2f5266138e77678869560a633028d162a0cc4899c59a492f35371090c373ebdaad0c38dd05f700bc63aeb34740f1ce1e9443fbc7b057ce3e3a64c017a9830e90afb81d04afe15ba8b7de70cd7faee92cc665691973f656859dabe188688c2a700a028eab98bc23dfa784101083fa6def7f5781134a67b35fed296f6ce998cf3e8a8239be84c4fc39287f602e0d77b0fbcb9cc51d6fd7b63c6d8282a9e41ea87aaf3a570ba1d26af9ad022ba1a1acf';
 
   constructor(private readonly appService: AppService) {}
 
@@ -21,6 +21,8 @@ export class AppController {
 
   @Get('/api/leads')
   async getDeals() {
+    const data = [];
+
     if (!this.accessToken && !this.refreshToken) {
       console.log('needAccesstoken');
       const newToken = await this.appService.getToken(
@@ -53,11 +55,22 @@ export class AppController {
       this.refreshToken = newToken.refresh_token;
     }
 
-    const data = await this.appService.getDeals(
+    const deals = await this.appService.getDeals(
       'https://denisjet.amocrm.ru/api/v4/leads',
       this.accessToken,
     );
 
+    deals.forEach((deal) => {
+      const dataDeal = {
+        id: deal.id,
+        date: deal.created_at,
+        name: deal.name,
+        price: deal.price,
+      };
+      data.push(dataDeal);
+    });
+
+    console.log(deals);
     console.log(data);
     return data;
   }
