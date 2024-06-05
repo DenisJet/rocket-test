@@ -6,6 +6,9 @@ import MainView from './components/MainView.vue'
 <template>
   <Suspense>
     <MainView />
+    <template #fallback>
+      Загрузка...
+    </template>
   </Suspense>
 </template>
 

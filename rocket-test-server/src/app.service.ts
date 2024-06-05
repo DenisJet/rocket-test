@@ -4,15 +4,6 @@ import { ExchangeAccessTokenOptions } from './ExchangeAccessTokenOptions';
 import { HttpService } from '@nestjs/axios';
 import { catchError, firstValueFrom, map } from 'rxjs';
 
-interface LeadsResponse {
-  _embedded: any;
-}
-
-interface ContactsResponse {
-  name: string;
-  custom_fields_values: any[];
-}
-
 @Injectable()
 export class AppService {
   constructor(private readonly httpService: HttpService) {}
@@ -47,7 +38,7 @@ export class AppService {
 
     const data = await firstValueFrom(
       this.httpService
-        .get<LeadsResponse>(`${url}/leads?with=contacts&query=${query}`, {
+        .get(`${url}/leads?with=contacts&query=${query}`, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + token,
@@ -65,7 +56,7 @@ export class AppService {
       const user = async () => {
         return await firstValueFrom(
           this.httpService
-            .get<any>(`${url}/users/${lead.responsible_user_id}`, {
+            .get(`${url}/users/${lead.responsible_user_id}`, {
               headers: {
                 Authorization: 'Bearer ' + token,
               },
@@ -77,7 +68,7 @@ export class AppService {
       const status = async () => {
         return await firstValueFrom(
           this.httpService
-            .get<any>(
+            .get(
               `${url}/leads/pipelines/${lead.pipeline_id}/statuses/${lead.status_id}`,
               {
                 headers: {
@@ -95,14 +86,11 @@ export class AppService {
       const contacts = async () => {
         return await firstValueFrom(
           this.httpService
-            .get<ContactsResponse>(
-              `${url}/contacts/${lead._embedded.contacts[0].id}`,
-              {
-                headers: {
-                  Authorization: 'Bearer ' + token,
-                },
+            .get(`${url}/contacts/${lead._embedded.contacts[0].id}`, {
+              headers: {
+                Authorization: 'Bearer ' + token,
               },
-            )
+            })
             .pipe(map((res) => res.data)),
         );
       };
