@@ -41,10 +41,13 @@ export class AppService {
     }).then((response) => response.json());
   }
 
-  async getDeals(url: string, token: string) {
+  async getDeals(token: string, query?: string) {
+    const url = 'https://denisjet.amocrm.ru/api/v4';
+    query && query.length >= 2 ? query : (query = '');
+
     const data = await firstValueFrom(
       this.httpService
-        .get<LeadsResponse>(`${url}/leads?with=contacts`, {
+        .get<LeadsResponse>(`${url}/leads?with=contacts&query=${query}`, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + token,
@@ -58,7 +61,7 @@ export class AppService {
         ),
     );
 
-    const leads = data._embedded.leads.map(async (lead: any) => {
+    const leads = data?._embedded.leads?.map(async (lead: any) => {
       const user = async () => {
         return await firstValueFrom(
           this.httpService
