@@ -6,11 +6,20 @@
       <template #extra><a-input-search v-model:value="value" placeholder="Найти..." style="width: 200px" 
         @search="onSearch"
     /></template> 
-      <a-table :columns="columns" :data-source="data" :scroll="{ x: 900 }" :expand-column-width="50" :pagination="false">
+      <a-table :rowKey="(record: any) => record" :columns="columns" :data-source="data" :scroll="{ x: 900 }" :expand-column-width="50" :pagination="false">
         <template #expandedRowRender="{ record }">
           <p style="margin: 0">
-            {{ record.description }}
+            Контакты:
           </p>
+          <span style="margin: 0">
+            Имя: {{ record.contacts.name }},
+          </span>
+          <span style="margin: 0">
+            Телефон: {{ record.contacts.phone }},
+          </span>
+          <span style="margin: 0">
+            Email: {{ record.contacts.email }}
+          </span>
         </template>
       </a-table>
     </a-card>
@@ -31,46 +40,22 @@ const columns = [
   { title: 'Название', dataIndex: 'name', key: 'name', fixed: true },
   { title: 'Бюджет', dataIndex: 'price', key: 'price' },
   { title: 'Статус', dataIndex: 'status', key: 'status' },
-  { title: 'Ответственный', dataIndex: 'responsible', key: 'responsible' },
+  { title: 'Ответственный', dataIndex: 'user', key: 'user' },
   { title: 'Дата создания', dataIndex: 'date', key: 'date' },
 ];
 
 const route = "http://localhost:3001/api/leads";
-
-// const data = [
-//   {
-//     key: 1,
-//     name: 'Первая',
-//     budget: '100 000',
-//     status: 'Переговоры',
-//     responsible: 'Иванов',
-//     date: '11.04.2024',
-//     description: 'Контакты'
-//   },
-//   {
-//     key: 2,
-//     name: 'Вторая',
-//     budget: '70 000',
-//     status: 'Закрыта',
-//     responsible: 'Петров',
-//     date: '18.03.2024',
-//     description: 'Контакты'
-//   },
-// ];
 
 const data = await fetch(route, {
   headers: {
     "Content-Type": "application/json"
   },
 }).then((res) => res.json());
+
 console.log(data);
 
 </script>
 
 <style scoped>
 
-
-@media (min-width: 1024px) {
-
-}
 </style>
